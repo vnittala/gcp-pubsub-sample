@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+}
+
+group 'com.prowess.services.examples'
+version '1.0.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    floggerVersion = "0.4"
+    googleOAuthVersion = "v1-rev155-1.25.0"
+    googlePubSubVersion = "1.82.0"
+}
+
+dependencies {
+    compile "com.google.flogger:flogger:${floggerVersion}"
+    compile "com.google.flogger:flogger-system-backend:${floggerVersion}"
+    //compile "com.google.flogger:flogger-slf4j-backend:${floggerVersion}"
+
+    // Google OAuth2 libraries
+    compile "com.google.apis:google-api-services-oauth2:${googleOAuthVersion}"
+    compile "com.google.cloud:google-cloud-pubsub:${googlePubSubVersion}"
+
+    // https://mvnrepository.com/artifact/org.javalite/app-config
+    compile group: 'org.javalite', name: 'app-config', version: '2.3'
+    // https://mvnrepository.com/artifact/org.javalite/javalite-common
+    compile group: 'org.javalite', name: 'javalite-common', version: '2.3'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "com.prowess.services.examples.PubSubSample"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+
